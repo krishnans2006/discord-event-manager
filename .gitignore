@@ -233,3 +233,4 @@ fabric.properties
 
 # Custom
 config.json  # includes discord token
+data/creds.json  # firebase credentials
