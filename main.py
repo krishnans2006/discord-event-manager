@@ -9,13 +9,13 @@ with open("config.json") as f:
     config = json.load(f)
 
 
-intents = discord.Intents.default()
+intents = discord.Intents(members=True)
 
 client = discord.Bot(
     intents=intents, debug_guilds=config["test_guilds"], owner_id=731604933773885521
 )
 
-cogs = ["cogs.help"]
+cogs = ["cogs.help", "cogs.view", "cogs.manage"]
 for cog in cogs:
     client.load_extension(cog)
 

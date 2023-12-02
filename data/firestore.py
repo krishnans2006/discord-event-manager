@@ -145,6 +145,22 @@ class User(SnowflakeCollection):
     def update_tag(cls, user_id: int, tag: str) -> bool:
         return super().update(user_id, {"Tag": tag})
 
+    @classmethod
+    def create_and_update_tag(cls, user_id: int, tag: str) -> bool:
+        if cls.exists(user_id, tag):
+            return cls.update_tag(user_id, tag)
+        else:
+            return cls.create(user_id, tag)
+
 
 class Event(SnowflakeCollection):
     name = "Events"
+
+    @classmethod
+    def add_interested(cls, event_id: int, users: dict[int, str]) -> bool:
+        if not cls.exists(event_id):
+            return False
+        super().update(event_id, {"Interested": list(users.keys())})
+
+        for user_id, tag in users.items():
+            User.create_and_update_tag(user_id, tag)
